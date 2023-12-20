@@ -5,6 +5,7 @@ import {
   forwardRef,
   useImperativeHandle,
   useRef,
+
 } from "react";
 import "./App.css";
 import {
@@ -14,12 +15,14 @@ import {
   GridItem,
   Breadcrumb,
   BreadcrumbItem,
+  Button
 } from "@chakra-ui/react";
 import { faFile, faFolder } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { dummyData } from "./dummyData";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
+import { Card, CardHeader, CardBody, CardFooter,Stack,Heading,StackDivider } from '@chakra-ui/react'
 
 interface Material {
   id: string;
@@ -64,198 +67,293 @@ interface DirStructure<T> {
   children: DirStructure<T>[];
 }
 
-const convertToDirStructure = (
-  data: Data
-): Array<DirStructure<Material | Study | Protocol | Test>> => {
-  const studyMap = new Map(data.studies.map((study) => [study.id, study]));
-  const protocolMap = new Map(
-    data.protocols.map((protocol) => [protocol.id, protocol])
+interface MaterialCardProps {
+  // material: Material;
+  onSelectMaterial: (material: Material) => void;
+}
+
+ 
+const MaterialCard: React.FC<MaterialCardProps> = ({ onSelectMaterial}) => {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredMaterials = dummyData.materials.filter((m) =>
+  m.name.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
+  return (
+    <div style={{ border: '2px solid #ccc', padding: '10px', margin: '10px',borderRadius: "10px" }}>
+      <div style={{
+        display: "flex",
+        justifyContent: "space-between",
+        padding: "20px",
+        width: "100%"
+      }}>
+      <h3 style={{
+        fontFamily: "sans-serif",
+        fontSize: "20px",
+        marginLeft: "0px"
+      }}>Materials</h3>
+      <input
+        type="text"
+        placeholder="Search materials..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={{ marginBottom: '10px', border: "3px solid silver", borderRadius: "3px" , width: "50%"}}
+      />
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {filteredMaterials.map((material:any) => (
+          <div
+            key={material.id}
+            style={{
+              border: '3px solid #ddd',
+              width: "30px",
+              padding: '10px',
+              margin: '10px',
+              cursor: 'pointer',
+              flex: '0 0 calc(50% - 20px)', // Set flex basis to make two items in one row
+              transition: "border-color 0.3s", // Add a transition effect for a smooth hover
+            }}
+            onClick={() => onSelectMaterial(material)}
+          >
+            <h4>{material.name}</h4>
+            {/* Display other material details here */}
+          </div>
+        ))}
+      </div>
+    </div>
   );
-  const testMap = new Map(data.tests.map((test) => [test.id, test]));
-
-  const materials = data.materials.map((material) => ({
-    id: material.id,
-    name: material.name,
-    data: material,
-    type: "dir",
-    children: material.studies.map((studyId) => {
-      const study = studyMap.get(studyId)!;
-      return {
-        id: studyId,
-        name: study.name,
-        data: study,
-        type: "dir",
-        children: study.protocols.map((protocolId) => {
-          const protocol = protocolMap.get(protocolId)!;
-          return {
-            id: protocolId,
-            name: protocol.name,
-            data: protocol,
-            type: "dir",
-            children: protocol.tests.map((testId) => {
-              const test = testMap.get(testId)!;
-              return {
-                id: testId,
-                name: test.name,
-                data: test,
-                type: "file",
-                children: [],
-              };
-            }),
-          };
-        }),
-      };
-    }),
-  }));
-
-  return materials as Array<DirStructure<Material | Study | Protocol | Test>>;
 };
 
-console.log(convertToDirStructure(dummyData));
+const StudyCard = ({selectedMaterial,onSelectStudies}:any) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  console.log("studies",selectedMaterial.studies )
 
-const FileExplorer = forwardRef<
-  {
-    getPath: () => string[];
-    changePath: (newPath: string[]) => void;
-  },
-  {
-    dirs: Array<DirStructure<Material | Study | Protocol | Test>>;
-    render: (
-      file: DirStructure<Material | Study | Protocol | Test>,
-      next: () => void
-    ) => JSX.Element;
-    onPathChange?: (path: string[]) => void;
-  }
->(({ dirs, render, onPathChange }, ref) => {
-  const [path, setPath] = useState<string[]>([]);
-  const getFiles = useCallback(
-    (
-      path: string[],
-      dirs: DirStructure<Material | Study | Protocol | Test>[]
-    ): DirStructure<Material | Study | Protocol | Test>[] => {
-      // recursively get files
-      for (const pathItem of path) {
-        const dir = dirs.find((dir) => dir.name === pathItem);
-        if (dir) {
-          if (dir.type === "dir") {
-            return getFiles(path.slice(1), dir.children);
-          } else {
-            return [dir];
-          }
-        } else {
-          return [];
-        }
-      }
-      return dirs;
-    },
-    []
+  const filteredStudies = dummyData.studies.filter((study) =>
+    selectedMaterial.studies.includes(study.id) &&
+    study.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-
-  useImperativeHandle(ref, () => ({
-    getPath: () => path,
-    changePath: (newPath: string[]) => {
-      setPath(newPath);
-      if (onPathChange) {
-        onPathChange(newPath);
-      }
-    },
-  }));
-
-  const files = useMemo(() => getFiles(path, dirs), [path, getFiles, dirs]);
-
   return (
-    <Grid templateColumns="repeat(3, 1fr)" gap={6}>
-      {files.map((file) => {
-        const next = () => {
-          if (file.type === "dir") {
-            const newPath = [...path, file.name];
-            setPath(newPath);
-            if (onPathChange) {
-              onPathChange(newPath);
-            }
-          } else {
-            console.log("open file");
-          }
-        };
+    <div style={{ border: '2px solid #ccc', padding: '10px', margin: '10px',borderRadius: "10px" }}>
+      <div style={{
+        display: "flex",
+        justifyContent: "space-between",
+        padding: "20px",
+        width: "100%"
+      }}>
+      <h3 style={{
+        fontFamily: "sans-serif",
+        fontSize: "20px",
+        marginLeft: "0px"
+      }}>Studies</h3>
+      <input
+        type="text"
+        placeholder="Search studies..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={{ marginBottom: '10px', border: "3px solid silver", borderRadius: "3px", width: "50%" }}
+        
+      />
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {filteredStudies.map((material:any) => (
+          <div
+            key={material.id}
+            style={{
+              border: '3px solid #ddd',
+              width: "40px",
+              padding: '10px',
+              margin: '10px',
+              cursor: 'pointer',
+              flex: '0 0 calc(50% - 20px)', // Set flex basis to make two items in one row
+            }}
 
-        return (
-          <GridItem key={path.join("") + file.name} colSpan={1}>
-            {render(file, next)}
-          </GridItem>
-        );
-      })}
-    </Grid>
+            onClick={() => onSelectStudies(material)}
+
+          >
+            <h4>{material.name}</h4>
+          </div>
+        ))}
+      </div>
+    </div>
   );
-});
+};
+
+const Protocols = ({selectedStudies,onSelectProtocols}:any) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  console.log("studies",selectedStudies.protocols )
+
+  const filteredStudies = dummyData.protocols.filter((study) =>
+  selectedStudies.protocols.includes(study.id) &&
+    study.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  return (
+    <div style={{ border: '2px solid #ccc', padding: '10px', margin: '10px',borderRadius: "10px" }}>
+      <div style={{
+        display: "flex",
+        justifyContent: "space-between",
+        padding: "20px",
+        width: "100%"
+      }}>
+      <h3 style={{
+        fontFamily: "sans-serif",
+        fontSize: "20px",
+        marginLeft: "0px"
+      }}>Protocols</h3>
+      <input
+        type="text"
+        placeholder="Search protocols..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={{ marginBottom: '10px', border: "3px solid silver", borderRadius: "3px", width: "50%" }}
+      />
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {filteredStudies.map((material:any) => (
+          <div
+            key={material.id}
+            style={{
+              border: '3px solid #ddd',
+              width: "35px",
+              padding: '10px',
+              margin: '10px',
+              cursor: 'pointer',
+              flex: '0 0 calc(50% - 20px)', // Set flex basis to make two items in one row
+            }}
+
+            onClick={() => onSelectProtocols(material)}
+
+          >
+            <h4>{material.name}</h4>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+
+const Test = ({selectedProtocols}:any) => {
+  const [searchTerm, setSearchTerm] = useState('');
+  console.log("studies",selectedProtocols.tests )
+
+  const filteredStudies = dummyData.tests.filter((study) =>
+  selectedProtocols.tests.includes(study.id) &&
+    study.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+  return (
+    <div style={{ border: '2px solid #ccc', padding: '10px', margin: '10px',borderRadius: "10px" }}>
+      <div style={{
+        display: "flex",
+        justifyContent: "space-between",
+        padding: "20px",
+        width: "100%"
+      }}>
+      <h3 style={{
+        fontFamily: "sans-serif",
+        fontSize: "20px",
+        marginLeft: "0px"
+      }}>Tests</h3>
+      <input
+        type="text"
+        placeholder="Search test..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        style={{ marginBottom: '10px', border: "3px solid silver", borderRadius: "3px", width: "50%" }}
+      />
+      </div>
+      <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {filteredStudies.map((material:any) => (
+          <div
+            key={material.id}
+            style={{
+              border: '3px solid #ddd',
+              width: "30px",
+              padding: '10px',
+              margin: '10px',
+              cursor: 'pointer',
+              flex: '0 0 calc(50% - 20px)', // Set flex basis to make two items in one row
+            }}
+
+            // onClick={() => onSelectProtocols(material)}
+
+          >
+            <h4>{material.name}</h4>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
 
 function App() {
-  const [path, setPath] = useState<string[]>([]);
-  const fileExplorerRef = useRef<{
-    getPath: () => string[];
-    changePath: (newPath: string[]) => void;
-  }>(null);
-  const dirStructure = useMemo(() => convertToDirStructure(dummyData), []);
+  const [selectedMaterial, setSelectedMaterial] = useState(null);
+  const [selectedStudies, setSelectedStudies] = useState(null);
+  const [selectedProtocols, setSelectedProtocols] = useState(null);
+  const onSelectMaterial = (material:any) => {
+    setSelectedMaterial(material);
+    setSelectedStudies(null);
+    setSelectedProtocols(null);
+  };
+  const onSelectStudies = (material:any) => {
+    setSelectedStudies(material);
+    setSelectedProtocols(null);
 
-  const handleBreadcrumbClick = (index: number) => {
-    fileExplorerRef.current?.changePath(path.slice(0, index + 1));
   };
 
+  const onSelectProtocols = (material:any) => {
+    setSelectedProtocols(material);
+  };
+  console.log(selectedMaterial)
   return (
     <Box p={4}>
+      <div style={{
+        display: 'flex',
+        justifyContent: "space-between"
+      }}>
       <Text fontSize="lg" mb={4}>
         File Explorer
       </Text>
+      <Button>Summary & Progress report</Button>
+      </div>
       <Breadcrumb
         spacing="8px"
         separator={<ChevronRightIcon color="gray.500" />}
         mb={4}
       >
-        <BreadcrumbItem onClick={() => fileExplorerRef.current?.changePath([])}>
-          <FontAwesomeIcon icon={faHome} size="lg" color="blue.500" />
-        </BreadcrumbItem>
-        {path.map((p, index) => (
-          <BreadcrumbItem
-            key={`${p}-${index}`}
-            onClick={() => handleBreadcrumbClick(index)}
-          >
-            <Text>{p}</Text>
-          </BreadcrumbItem>
-        ))}
       </Breadcrumb>
 
-      <FileExplorer
-        dirs={dirStructure}
-        render={(file, next) => (
-          <Box
-            cursor="pointer"
-            p={3}
-            borderWidth="2px"
-            borderColor="gray.300"
-            borderRadius="lg"
-            mb={3}
-            shadow="md"
-            transition="transform 0.2s, boxShadow 0.2s"
-            _hover={{
-              transform: "scale(1.05)",
-              shadow: "lg",
-            }}
-            display="flex"
-            alignItems="center"
-            onClick={next}
-          >
-            <FontAwesomeIcon
-              icon={file.type === "dir" ? faFolder : faFile}
-              size="lg"
-              color={file.type === "dir" ? "orange.500" : "blue.500"}
-            />
-            <Text ml={3} fontWeight="medium">
-              {file.name}
-            </Text>
-          </Box>
+      <div style={{ display: 'flex' }}>
+        
+          <MaterialCard onSelectMaterial={onSelectMaterial} />
+          <div>
+        {selectedMaterial && (
+          <StudyCard
+          selectedMaterial = {selectedMaterial}
+          onSelectStudies = {onSelectStudies}
+          />
         )}
-        ref={fileExplorerRef}
-        onPathChange={setPath}
-      />
+      </div>
+
+      <div>
+        {selectedStudies && (
+          <Protocols
+          selectedStudies = {selectedStudies}
+          onSelectProtocols = {onSelectProtocols}
+          />
+        )}
+      </div>
+      <div>
+        {selectedProtocols && (
+          <Test
+          selectedProtocols = {selectedProtocols}
+          />
+        )}
+      </div>
+      </div>
+
+      
     </Box>
   );
 }
