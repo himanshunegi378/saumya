@@ -78,7 +78,7 @@ const NavigationBar = () => (
             Edwards
           </Text>
     <Flex alignItems="center">
-      <Link to="/saumya" style={{ textDecoration: "none" }}>
+      <Link to="/" style={{ textDecoration: "none" }}>
         <Button ml={4} colorScheme="teal">
           Back
         </Button>
