@@ -1,15 +1,13 @@
 {
   "files": {
     "main.css": "/saumya/static/css/main.dc4d6ff2.css",
-    "main.js": "/saumya/static/js/main.a2e8d108.js",
-    "static/js/787.6dd19d33.chunk.js": "/saumya/static/js/787.6dd19d33.chunk.js",
+    "main.js": "/saumya/static/js/main.b56a92f3.js",
     "index.html": "/saumya/index.html",
     "main.dc4d6ff2.css.map": "/saumya/static/css/main.dc4d6ff2.css.map",
-    "main.a2e8d108.js.map": "/saumya/static/js/main.a2e8d108.js.map",
-    "787.6dd19d33.chunk.js.map": "/saumya/static/js/787.6dd19d33.chunk.js.map"
+    "main.b56a92f3.js.map": "/saumya/static/js/main.b56a92f3.js.map"
   },
   "entrypoints": [
     "static/css/main.dc4d6ff2.css",
-    "static/js/main.a2e8d108.js"
+    "static/js/main.b56a92f3.js"
   ]
 }
