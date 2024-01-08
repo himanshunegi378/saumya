@@ -6,6 +6,7 @@ import {
     useImperativeHandle,
     useRef,
     useEffect,
+    SetStateAction,
   } from "react";
   import "./App.css";
   import {
@@ -92,12 +93,13 @@ import {
   const MaterialCard = ({ onSelectMaterial,dummyDatas }:any) => {
     
     const dummy = dummyDatas[0]
-    console.log(dummy.materials,"bvfdvfhdgvfhdg")
+    // console.log(dummy.materials,"bvfdvfhdgvfhdg")
     const [searchTerm, setSearchTerm] = useState("");
     const [selectedMaterialId, setSelectedMaterialId] = useState<number | null>(
       null
     );
     const [selectedMaterialIds, setSelectedMaterialIds] = useState<string[]>([]);
+    const [selectedMaterial, setSelectedMaterial] = useState<string[]>([]);
     const [selectedStudies, setSelectedStudies] = useState<string[]>([]);
   
     const filteredMaterials = dummy.materials.filter((m:any) =>
@@ -122,14 +124,11 @@ import {
        console.log(allStudies,"allStudies......")
      const uniqueStudies = [...new Set(allStudies)];
      setSelectedStudies(uniqueStudies);
-     onSelectMaterial(uniqueStudies)
+     onSelectMaterial(uniqueStudies,selectedMaterial)
   
-  console.log(uniqueStudies,"selectedStudies.......")
+  // console.log(uniqueStudies,"selectedStudies.......")
       
-    };
-  
-    
-  
+    };     
     return (
       <Card
         style={{ backgroundColor: "rgba(255, 0, 0, 0.6)", padding: "10px" }}
@@ -171,6 +170,7 @@ import {
                 onClick={() => {
                   toggleSelectMaterial(material.id);
                   // setSelectedMaterialId(material.id);
+                  setSelectedMaterial(material.name)
                 }}
                 bg={"white"}
                 bgGradient={selectedMaterialIds.includes(material.id) ? 'linear(to-r, teal.500, green.500)' : "white"}
@@ -219,7 +219,7 @@ import {
      setSelectedStudies(uniqueStudies);
      onSelectStudies(uniqueStudies)
   
-  console.log(uniqueStudies,"selectedStudies.......")
+  // console.log(uniqueStudies,"selectedStudies.......")
     }
     const handleArrow = () => {
       onSelectStudies(null)
@@ -283,7 +283,7 @@ import {
     );
     const [selectedMaterialIds, setSelectedMaterialIds] = useState<string[]>([]);
     const [selectedTest, setSelectedStudies] = useState<string[]>([]);
-    console.log("studies", selectedStudies.protocols);
+    // console.log("studies", selectedStudies.protocols);
   
     const filteredStudies = dummyData.protocols.filter(
       (study:any) =>
@@ -306,12 +306,12 @@ import {
        const allStudies = materialIds
        .map((id) => dummyData.protocols.find((material:any) => material.id === id)?.tests || [])
        .flat();
-       console.log(allStudies,"allStudies......")
+      //  console.log(allStudies,"allStudies......")
      const uniqueStudies = [...new Set(allStudies)];
      setSelectedStudies(uniqueStudies);
      onSelectProtocols(uniqueStudies)
   
-  console.log(uniqueStudies,"selectedStudies.......")
+  // console.log(uniqueStudies,"selectedStudies.......")
   
     }
     const handleArrow = () => {
@@ -454,12 +454,12 @@ import {
     const [selectResources, setSelectResources] = useState({});
     const [dataChanged, setDataChanged] = useState(false);
     const toast = useToast()
-    console.log("svdhachdfgascfga");
+    // console.log("svdhachdfgascfga");
     useEffect(() => {
       const fetchData = async () => {
         try {
           const response = await fetch(
-            "https://658c0753859b3491d3f55409.mockapi.io/resources/resources"
+            "https://6596915d6bb4ec36ca02eba3.mockapi.io/resource"
           );
           const data = await response.json();
           setResources(data);
@@ -482,7 +482,7 @@ import {
       try {
         // Perform a PUT request to update the resource
         const response = await fetch(
-          `https://658c0753859b3491d3f55409.mockapi.io/resources/resources/${selectedMaterialId}`,
+          `https://6596915d6bb4ec36ca02eba3.mockapi.io/resource/${selectedMaterialId}`,
           {
             method: "PUT",
             headers: {
@@ -492,7 +492,8 @@ import {
               ...selectResources,
               test: name, // Update the 'test' field with the new value
               duration: `${duration}`,
-              status: "Allocated"
+              status: "Allocated",
+              
             }),
           }
         );
@@ -623,6 +624,7 @@ window.location.reload();
   
   function Home() {
     const [selectedMaterial, setSelectedMaterial] = useState(null);
+    const [selMaterial, setSelMaterial] = useState(null);
     const [selectedStudies, setSelectedStudies] = useState(null);
     const [selectedProtocols, setSelectedProtocols] = useState(null);
     const [selectedTest, setSelectedTest] = useState(null);
@@ -644,8 +646,10 @@ window.location.reload();
   },[]);
   
   
-    const onSelectMaterial = (material: any) => {
+    const onSelectMaterial = (material: SetStateAction<null>,selectedMaterial: SetStateAction<null>) => {
       setSelectedMaterial(material);
+      console.log(selectedMaterial,"duidudidudi")
+      setSelMaterial(selectedMaterial);
       setSelectedStudies(null);
       setSelectedProtocols(null);
       setSelectedTest(null);
@@ -703,15 +707,15 @@ window.location.reload();
     
   </Box>
         <div style={{ display: "flex", width: "100%" }}>
-          <div style={{ display: "flex", flexWrap: "wrap" }}>
-            <div style={{ padding: "10px" }}>
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: 'space-between'}}>
+            <div style={{ padding: "10px",flex: "1" }}>
               
               {dummyDatas && (<MaterialCard 
               onSelectMaterial={onSelectMaterial}
               dummyDatas = {dummyDatas}
                /> )}
             </div>
-            <div style={{ padding: "10px" }}>
+            <div style={{ padding: "10px",flex: "1"}}>
               {selectedMaterial && (
                 <StudyCard
                   selectedMaterial={selectedMaterial}
@@ -720,7 +724,7 @@ window.location.reload();
               )}
             </div>
   
-            <div style={{ padding: "10px" }}>
+            <div style={{ padding: "10px",flex: "1" }}>
               {selectedStudies && (
                 <Protocols
                   selectedStudies={selectedStudies}
@@ -728,7 +732,7 @@ window.location.reload();
                 />
               )}
             </div>
-            <div style={{ padding: "10px" }}>
+            <div style={{ padding: "10px",flex: "1" }}>
               {selectedProtocols && (
                 <Test
                   selectedProtocols={selectedProtocols}
@@ -737,11 +741,12 @@ window.location.reload();
                 />
               )}
             </div>
-            <div style={{ padding: "10px" }}>
+            <div style={{ padding: "10px",flex: "1" }}>
               {selectedTest && (
                 <Resources
                   onSelectResources={onSelectResources}
                   selectedTest={selectedTest}
+                  allData={[]}
                 />
               )}
             </div>

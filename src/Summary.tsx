@@ -52,12 +52,12 @@ const TableHeader = ({ selectedStatus, setSelectedStatus }: any) => (
       <Th color={"white"}>Skills</Th>
       <Th isNumeric color={"white"}>
         <Select
-          placeholder="Status"
-          value={selectedStatus}
+          // placeholder="Status"
+          value={selectedStatus || "Status"}
           onChange={(e) => setSelectedStatus(e.target.value)}
           color={"black"}
         >
-          {/* <option value="Status">Status</option> */}
+          <option value="Status">Status</option>
           <option value="Available">Available</option>
           <option value="Leave">Leave</option>
           <option value="Allocated">Allocated</option>
@@ -114,7 +114,7 @@ const totalAllocatedCount = resources.filter((item : any) => item.status === "Al
   }, []); // Empty dependency array means this effect runs once after the initial render
 
   const handleDownloadCSV = () => {
-    const availableData = resources.filter((item: any) => item.status === "Available");
+    const availableData = resources.filter((item: any) => item.status === "Allocated");
 
     const csvContent =
       "data:text/csv;charset=utf-8," +
