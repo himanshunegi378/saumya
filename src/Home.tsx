@@ -535,6 +535,29 @@ window.location.reload();
   
     return (
       <div style={{display: "flex", justifyContent: "space-between"}}>
+        {filteredStudies.length === 0 ? (
+        <Card  maxW="250px" w="100%"  bgGradient={[
+          'linear(to-tr, teal.300, yellow.400)',
+          'linear(to-t, blue.200, teal.500)',
+          'linear(to-b, orange.100, purple.300)',
+        ]}>
+          <CardHeader display="flex" justifyContent="space-between">
+            <Heading size="md">Resources</Heading>
+            <Input
+              htmlSize={7}
+              width="90px"
+              ml="30px"
+              size="sm"
+              placeholder="search"
+              variant="filled"
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </CardHeader>
+          <CardBody>
+            <Text>No data available for resources.</Text>
+          </CardBody>
+        </Card>
+      ) : (
       <Card
         style={{ backgroundColor: "rgba(255, 0, 0, 0.6)" }}
         maxW="250px"
@@ -610,6 +633,7 @@ window.location.reload();
           </Stack>
         </CardBody>
       </Card>
+      )}
       <Button style={{marginLeft: "40px"}} bgGradient='linear(to-r, teal.500, green.500)'
     _hover={{
       bgGradient: 'linear(to-r, red.500, yellow.500)',
