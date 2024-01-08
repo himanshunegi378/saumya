@@ -221,6 +221,9 @@ import {
   
   console.log(uniqueStudies,"selectedStudies.......")
     }
+    const handleArrow = () => {
+      onSelectStudies(null)
+    }
     return (
       <Card
         style={{ backgroundColor: "rgba(255, 0, 0, 0.6)" }}
@@ -233,7 +236,7 @@ import {
         ]}
       >
         <CardHeader display="flex" justifyContent="space-between">
-          <GoArrowLeft size={30} style={{ cursor: "pointer" }} />
+          <GoArrowLeft size={30} style={{ cursor: "pointer" }} onClick={handleArrow}/>
           <Heading size="md">Studies</Heading>
           <Input
             htmlSize={7}
@@ -311,6 +314,9 @@ import {
   console.log(uniqueStudies,"selectedStudies.......")
   
     }
+    const handleArrow = () => {
+      onSelectProtocols(null)
+    }
     return (
       <Card
         style={{ backgroundColor: "rgba(255, 0, 0, 0.6)" }}
@@ -323,7 +329,7 @@ import {
         ]}
       >
         <CardHeader display="flex" justifyContent="space-between">
-          <GoArrowLeft size={30} style={{ cursor: "pointer" }} />
+          <GoArrowLeft size={30} style={{ cursor: "pointer" }} onClick={handleArrow} />
           <Heading size="md">Protocols</Heading>
           <Input
             htmlSize={7}
@@ -378,7 +384,9 @@ import {
         study.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   
-    
+    const handleArrow = () => {
+      onSelectTest(null)
+    }
   
     return (
       <Card
@@ -392,7 +400,7 @@ import {
         ]}
       >
         <CardHeader display="flex" justifyContent="space-between">
-          <GoArrowLeft size={30} style={{ cursor: "pointer" }} />
+          <GoArrowLeft size={30} style={{ cursor: "pointer" }} onClick={handleArrow}/>
           <Heading size="md">Test</Heading>
           <Input
             htmlSize={7}
@@ -527,7 +535,7 @@ window.location.reload();
         ]}
       >
         <CardHeader display="flex" justifyContent="space-between">
-          <GoArrowLeft size={30} style={{ cursor: "pointer" }} />
+          {/* <GoArrowLeft size={30} style={{ cursor: "pointer" }} /> */}
           <Heading size="md">Resources</Heading>
           <Input
             htmlSize={7}

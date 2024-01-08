@@ -57,7 +57,7 @@ const TableHeader = ({ selectedStatus, setSelectedStatus }: any) => (
           onChange={(e) => setSelectedStatus(e.target.value)}
           color={"black"}
         >
-          <option value="All">All</option>
+          {/* <option value="Status">Status</option> */}
           <option value="Available">Available</option>
           <option value="Leave">Leave</option>
           <option value="Allocated">Allocated</option>
@@ -78,7 +78,7 @@ const NavigationBar = () => (
             Edwards
           </Text>
     <Flex alignItems="center">
-      <Link to="/summary" style={{ textDecoration: "none" }}>
+      <Link to="/saumya" style={{ textDecoration: "none" }}>
         <Button ml={4} colorScheme="teal">
           Back
         </Button>
@@ -89,7 +89,7 @@ const NavigationBar = () => (
 
 
 function Summary() {
-  const [selectedStatus, setSelectedStatus] = React.useState("Available");
+  const [selectedStatus, setSelectedStatus] = React.useState("Status");
   // const { isOpen, onOpen, onClose } = useDisclosure()
   const [resources, setResources] = React.useState([]);
   // Assuming 'resources' is your fetched data array
@@ -149,7 +149,7 @@ const totalAllocatedCount = resources.filter((item : any) => item.status === "Al
     return `EQL-${generateRandomNumber()}`;
   };
 
-  const filteredData = (selectedStatus === "All"
+  const filteredData = (selectedStatus === "Status"
   ? resources
   : resources.filter((item: { status: string }) => item.status === selectedStatus)) as Array<{
     id: string;
