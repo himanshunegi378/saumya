@@ -6,9 +6,9 @@ import Summary from './Summary';
 
 function App() {
   return (
-    <Router>
+    <Router basename='/saumya'>
       <Routes>
-        <Route path='/saumya' element={<Home />}/>
+        <Route path='/' element={<Home />}/>
         <Route path="/summary" element={<Summary />} />
       </Routes>
     </Router>
