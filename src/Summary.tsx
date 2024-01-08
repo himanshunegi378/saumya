@@ -388,7 +388,7 @@ const totalAllocatedCount = resources.filter((item : any) => item.status === "Al
               <Button
               bg={"blue"}
               colorScheme="blue"
-              variant="ghost"
+              // variant="ghost"
               // onClick={""}
               color={"white"}
               marginBottom={"10px"}
