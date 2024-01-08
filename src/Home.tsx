@@ -106,7 +106,7 @@ import {
       m.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   
-    const toggleSelectMaterial = (materialId: any) => {
+    const toggleSelectMaterial = (materialId: any,materialName: any) => {
       setSelectedMaterialId(materialId);
       let materialIds = selectedMaterialIds
       // Toggle the selected state
@@ -124,7 +124,7 @@ import {
        console.log(allStudies,"allStudies......")
      const uniqueStudies = [...new Set(allStudies)];
      setSelectedStudies(uniqueStudies);
-     onSelectMaterial(uniqueStudies,selectedMaterial)
+     onSelectMaterial(uniqueStudies,materialName)
   
   // console.log(uniqueStudies,"selectedStudies.......")
       
@@ -168,7 +168,7 @@ import {
                   // boxShadow: "0 0 10px rgba(255, 255, 255, 0.8)",
                 }}
                 onClick={() => {
-                  toggleSelectMaterial(material.id);
+                  toggleSelectMaterial(material.id,material.name);
                   // setSelectedMaterialId(material.id);
                   setSelectedMaterial(material.name)
                 }}
@@ -199,7 +199,7 @@ import {
         study.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   
-    const toggleSelectStudies = (materialId: any) => {
+    const toggleSelectStudies = (materialId: any, materialName: any) => {
       setSelectedMaterialId(materialId);
       let materialIds = selectedMaterialIds
       // Toggle the selected state
@@ -217,7 +217,7 @@ import {
        console.log(allStudies,"allStudies......")
      const uniqueStudies = [...new Set(allStudies)];
      setSelectedStudies(uniqueStudies);
-     onSelectStudies(uniqueStudies)
+     onSelectStudies(uniqueStudies,materialName)
   
   // console.log(uniqueStudies,"selectedStudies.......")
     }
@@ -262,7 +262,7 @@ import {
                 }}
                 onClick={() => {
                   setSelectedMaterialId(material.id);
-                  toggleSelectStudies(material.id);
+                  toggleSelectStudies(material.id,material.name);
                 }}
                 bg={"white"}
                 bgGradient={selectedMaterialIds.includes(material.id) ? 'linear(to-r, teal.500, green.500)' : "white"}
@@ -291,7 +291,7 @@ import {
         study.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
   
-    const toggleSelectProtocols = (materialId: any) => {
+    const toggleSelectProtocols = (materialId: any, materialName:any) => {
       setSelectedMaterialId(materialId);
       let materialIds = selectedMaterialIds
       // Toggle the selected state
@@ -309,7 +309,7 @@ import {
       //  console.log(allStudies,"allStudies......")
      const uniqueStudies = [...new Set(allStudies)];
      setSelectedStudies(uniqueStudies);
-     onSelectProtocols(uniqueStudies)
+     onSelectProtocols(uniqueStudies,materialName)
   
   // console.log(uniqueStudies,"selectedStudies.......")
   
@@ -355,7 +355,7 @@ import {
                 }}
                 onClick={() => {
                   // onSelectProtocols(material);
-                  toggleSelectProtocols(material.id)
+                  toggleSelectProtocols(material.id, material.name)
                   setSelectedMaterialId(material.id);
                 }}
                 bg={"white"}
@@ -387,7 +387,6 @@ import {
     const handleArrow = () => {
       onSelectTest(null)
     }
-  
     return (
       <Card
         style={{ backgroundColor: "rgba(255, 0, 0, 0.6)" }}
@@ -425,9 +424,9 @@ import {
                   bg: "green.500", // Background color on hover>
                 }}
                 onClick={() => {
-                  // toggleSelectProtocols(material.id);
+                  // toggleSelectTest(material.name);
                   // onSelectProtocols(material);
-                  onSelectTest(material);
+                  onSelectTest(material,material.name);
                   setSelectedMaterialId(material.id);
                 }}
                 bg={"white"}
@@ -443,7 +442,7 @@ import {
     );
   };
   
-  const Resources = ({ onSelectResources, selectedTest }: any) => {
+  const Resources = ({ onSelectResources, selectedTest ,selMaterial,selStudies,selProtocols}: any) => {
     const {name, duration} = selectedTest;
     const [resources, setResources] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -493,6 +492,9 @@ import {
               test: name, // Update the 'test' field with the new value
               duration: `${duration}`,
               status: "Allocated",
+              Materials: selMaterial,
+              Studies: selStudies,
+              Protocols: selProtocols
               
             }),
           }
@@ -626,8 +628,11 @@ window.location.reload();
     const [selectedMaterial, setSelectedMaterial] = useState(null);
     const [selMaterial, setSelMaterial] = useState(null);
     const [selectedStudies, setSelectedStudies] = useState(null);
+    const [selStudies, setSelStudies] = useState(null);
     const [selectedProtocols, setSelectedProtocols] = useState(null);
+    const [selProtocols, setSelProtocols] = useState(null);
     const [selectedTest, setSelectedTest] = useState(null);
+    const [selTest, setSelTest] = useState(null);
     const [selectedResource, setSelectedResource] = useState(null);
     const [dummyDatas, setDummyData] = useState(null);
   useEffect(() => {
@@ -654,18 +659,21 @@ window.location.reload();
       setSelectedProtocols(null);
       setSelectedTest(null);
     };
-    const onSelectStudies = (material: any) => {
+    const onSelectStudies = (material: any, materialName:any) => {
+      setSelStudies(materialName)
       setSelectedStudies(material);
       setSelectedProtocols(null);
       setSelectedTest(null);
     };
   
-    const onSelectProtocols = (material: any) => {
+    const onSelectProtocols = (material: any, materialName:any ) => {
+      setSelProtocols(materialName);
       setSelectedProtocols(material);
       setSelectedTest(null);
       // console.log(selectedProtocols)
     };
-    const onSelectTest = (material: any) => {
+    const onSelectTest = (material: any,materialName:any) => {
+      setSelTest(materialName);
       setSelectedTest(material);
       // console.log(selectedTest)
     };
@@ -746,7 +754,10 @@ window.location.reload();
                 <Resources
                   onSelectResources={onSelectResources}
                   selectedTest={selectedTest}
-                  allData={[]}
+                  // allData={[selMaterial,selStudies,selProtocols,selTest]}
+                  selMaterial = {selMaterial}
+                  selStudies = {selStudies}
+                  selProtocols= {selProtocols}
                 />
               )}
             </div>

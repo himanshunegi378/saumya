@@ -102,7 +102,7 @@ const totalAllocatedCount = resources.filter((item : any) => item.status === "Al
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://658c0753859b3491d3f55409.mockapi.io/resources/resources"
+          "https://6596915d6bb4ec36ca02eba3.mockapi.io/resource"
         );
         setResources(response.data);
       } catch (error) {
@@ -118,7 +118,7 @@ const totalAllocatedCount = resources.filter((item : any) => item.status === "Al
 
     const csvContent =
       "data:text/csv;charset=utf-8," +
-      "Id,Name,Duration,Skills,Status,test\n" +
+      "Id,Name,Duration,Skills,Status,test,Materials, Studies,Protocols\n" +
       availableData
         .map((item : any) =>
           [
@@ -128,6 +128,9 @@ const totalAllocatedCount = resources.filter((item : any) => item.status === "Al
             item.skills,
             item.status,
             item.test,
+            item.Materials,
+            item.Studies,
+            item.Protocols
           ].join(",")
         )
         .join("\n");
