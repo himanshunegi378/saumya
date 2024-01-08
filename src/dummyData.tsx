@@ -1,4 +1,4 @@
-import { Data } from "./App";
+import { Data } from "./Home";
 
 export const dummyData: Data = {
   materials: [
@@ -12,7 +12,7 @@ export const dummyData: Data = {
       id: "m2",
       name: "Carbon Fiber",
       type: "material",
-      studies: ["s3", "s4", "s5", "s6", "s7", "s8"],
+      studies: ["s3"],
     },
     {
       id: "m3",
@@ -62,7 +62,7 @@ export const dummyData: Data = {
       id: "s3",
       name: "Aerodynamic Efficiency",
       type: "study",
-      protocols: ["p5", "p6", "p7", "p8", "p9", "p10"],
+      protocols: ["p5"],
     },
     {
       id: "s4",
@@ -160,7 +160,7 @@ export const dummyData: Data = {
       id: "p5",
       name: "Wind Tunnel Testing",
       type: "protocol",
-      tests: ["t9", "t10"],
+      tests: ["t9"],
     },
     {
       id: "p6",
@@ -440,4 +440,55 @@ export const dummyData: Data = {
       duration: 180,
     },
   ],
+  resources:  [
+    {
+      id: "r1",
+      name: "Alex",
+      status: "Free"
+    },
+    {
+      id: "r1",
+      name: "Jonny",
+      status: "Free"
+    },
+    {
+      id: "r1",
+      name: "Ester",
+      status: "Free"
+    },
+    {
+      id: "r1",
+      name: "Heena",
+      status: "Free"
+    },
+    {
+      id: "r1",
+      name: "Molex",
+      status: "Free"
+    },
+    {
+      id: "r1",
+      name: "Nirobi",
+      status: "Free"
+    },
+    {
+      id: "r1",
+      name: "Jaspin",
+      status: "Free"
+    },
+    {
+      id: "r1",
+      name: "Jessica",
+      status: "Free"
+    },
+    {
+      id: "r1",
+      name: "Alex",
+      status: "Free"
+    },
+
+
+ ]
+
+  
 };
