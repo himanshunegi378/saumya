@@ -32,12 +32,12 @@ import SummaryModel from "./SummaryModel";
 import { dummyData } from "./data/dummydata";
 
 
-export const data = [
-  ["Availability", "Numbers"],
-  ["Available", 11],
-  ["leave", 2],
-  ["Allocated", 7],
-];
+// export const data = [
+//   ["Availability", "Numbers"],
+//   ["Available", 11],
+//   ["leave", 2],
+//   ["Allocated", 7],
+// ];
 
 
 export const options = {
@@ -96,6 +96,15 @@ function Summary() {
 const totalDataCount = resources.length;
 
 const totalAllocatedCount = resources.filter((item : any) => item.status === "Allocated").length;
+const totalAvailableCount = resources.filter((item: any) => item.status === "Available").length;
+const totalLeaveCount = resources.filter((item: any) => item.status === "Leave").length;
+
+const data = [
+  ["Availability", "Numbers"],
+  ["Available", totalAvailableCount],
+  ["Leave", totalLeaveCount],
+  ["Allocated", totalAllocatedCount],
+];
 
   React.useEffect(() => {
     // Fetch data from the API
@@ -118,7 +127,7 @@ const totalAllocatedCount = resources.filter((item : any) => item.status === "Al
 
     const csvContent =
       "data:text/csv;charset=utf-8," +
-      "Id,Name,Duration,Skills,Status,test,Materials, Studies,Protocols\n" +
+      "Id,Name,Duration,Skills,Status,test,Materials, Studies,Protocols, EQL\n" +
       availableData
         .map((item : any) =>
           [
@@ -130,7 +139,8 @@ const totalAllocatedCount = resources.filter((item : any) => item.status === "Al
             item.test,
             item.Materials,
             item.Studies,
-            item.Protocols
+            item.Protocols,
+            item.EQL
           ].join(",")
         )
         .join("\n");
@@ -159,6 +169,7 @@ const totalAllocatedCount = resources.filter((item : any) => item.status === "Al
     name: string;
     skills: string;
     status: string;
+    EQL: string
     // Add other properties as needed
   }>;
       
@@ -337,7 +348,7 @@ const totalAllocatedCount = resources.filter((item : any) => item.status === "Al
                         onClick={() => console.log("data")} // Add your click functionality here
                       >
                         <Td fontSize="1xl"
-            fontWeight="bold">{item.status === "Allocated" ? generateEQL() : "Not Generated"}</Td>
+            fontWeight="bold">{item.status === "Allocated" ? item.EQL : "Not Generated"}</Td>
                         <Td>{item.name}</Td>
                         <Td>{item.skills}</Td>
                         

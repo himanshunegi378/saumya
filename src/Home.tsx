@@ -477,6 +477,13 @@ import {
     );
   
     const handleAllocate = async (selectedMaterialId:any) => {
+      const generateRandomNumber = () => {
+        return Math.floor(Math.random() * 9000) + 1000;
+      };
+      
+      
+        const Eqlnumber = `EQL-${generateRandomNumber()}`;
+    
       console.log(selectedMaterialId)
       try {
         // Perform a PUT request to update the resource
@@ -494,7 +501,8 @@ import {
               status: "Allocated",
               Materials: selMaterial,
               Studies: selStudies,
-              Protocols: selProtocols
+              Protocols: selProtocols,
+              EQL:Eqlnumber
               
             }),
           }
