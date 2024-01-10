@@ -59,7 +59,7 @@ const TableHeader = ({ selectedStatus, setSelectedStatus }: any) => (
         >
           <option value="Status">Status</option>
           <option value="Available">Available</option>
-          <option value="Leave">Leave</option>
+          <option value="Leave">Not Available</option>
           <option value="Allocated">Allocated</option>
         </Select>
       </Th>
@@ -354,7 +354,7 @@ const data = [
                         
                         <Td>
                           <Badge variant="solid" colorScheme={item.status == "Available" ? "green" : "red"}>
-                            {item.status}
+                            {item.status  == "Leave" ? "Not Available" : item.status}
                           </Badge>
                         </Td>
                         <Td><SummaryModel data={item} /></Td>
