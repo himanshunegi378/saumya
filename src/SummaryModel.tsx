@@ -59,17 +59,26 @@ function SummaryModel({ data }: SummaryModelProps): JSX.Element {
   const markDates = () => {
     const today = new Date();
     const duration = parseInt(data.duration, 10);
+  console.log("Duration:", duration);
+  const durationMark = duration -1;
+
+  if (isNaN(duration)) {
+    console.error("Invalid duration:", durationMark);
+    return;
+  }
+
     const endDate = new Date(today);
-    endDate.setDate(today.getDate() + duration);
+    endDate.setDate(today.getDate() + durationMark);
 
     const datesToMark = [];
     while (today <= endDate) {
       datesToMark.push(new Date(today));
       today.setDate(today.getDate() + 1);
     }
-
+    console.log("Marked Dates:", datesToMark);
     setMarkedDates(datesToMark);
   };
+  
 
   useEffect(() => {
     markDates();
