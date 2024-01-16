@@ -532,7 +532,7 @@ const Resources = ({
     const fetchData = async () => {
       try {
         const response = await fetch(
-          "https://658c0753859b3491d3f55409.mockapi.io/resources/resources"
+          "https://6596915d6bb4ec36ca02eba3.mockapi.io/resource"
         );
         const data = await response.json();
         setResources(data);
