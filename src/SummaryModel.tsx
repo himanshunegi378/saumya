@@ -17,6 +17,8 @@ import Calendar from "react-calendar";
 
 interface SummaryModelProps {
   data: {
+    endDate: any;
+    startDate: any;
     id: string;
     name: string;
     duration: string;
@@ -57,18 +59,24 @@ function SummaryModel({ data }: SummaryModelProps): JSX.Element {
   };
 
   const markDates = () => {
-    const today = new Date();
+    const today = data.startDate ? new Date(data.startDate) : new Date();
+    // const today = new Date();
     const duration = parseInt(data.duration, 10);
-  console.log("Duration:", duration);
-  const durationMark = duration -1;
+    const startDate = data.startDate;
+    const endDates = data.endDate;
+    console.log("Duration:", duration);
+    const durationMark = duration - 1;
 
-  if (isNaN(duration)) {
-    console.error("Invalid duration:", durationMark);
-    return;
-  }
+    if (isNaN(duration)) {
+      console.error("Invalid duration:", durationMark);
+      return;
+    }
 
     const endDate = new Date(today);
     endDate.setDate(today.getDate() + durationMark);
+
+
+    console.log("endDate is ", endDate);
 
     const datesToMark = [];
     while (today <= endDate) {
@@ -78,82 +86,76 @@ function SummaryModel({ data }: SummaryModelProps): JSX.Element {
     console.log("Marked Dates:", datesToMark);
     setMarkedDates(datesToMark);
   };
-  
 
   useEffect(() => {
     markDates();
   }, [isOpen]);
   return (
     <>
-      <Button onClick={onOpen} colorScheme="teal">
+      <Button onClick={onOpen} colorScheme="teal" fontSize={"10px"}>
         Calender view
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader bg={"#7928CA"} borderRadius={"4px"} color={"white"}>Summary Details</ModalHeader>
+          <ModalHeader bg={"#7928CA"} borderRadius={"4px"} color={"white"}>
+            Summary Details
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Box>
               {/* Left side */}
-              <Box >
+              <Box>
                 <Flex alignItems="center" mb={2}>
                   <Text fontWeight="bold" width="80px" color={"black"}>
                     ID:
-                  </Text >{" "}
-                  <Text color={"#7928CA"} >
-                  {data.id}
-                  </Text>
+                  </Text>{" "}
+                  <Text color={"#7928CA"}>{data.id}</Text>
                 </Flex>
                 <Flex alignItems="center" mb={2}>
                   <Text fontWeight="bold" width="80px" color={"black"}>
                     Name:
                   </Text>{" "}
-                  <Text color={"#7928CA"} >
-                  {data.name}
-                  </Text>
+                  <Text color={"#7928CA"}>{data.name}</Text>
                 </Flex>
                 <Flex alignItems="center" mb={2}>
                   <Text fontWeight="bold" width="80px" color={"black"}>
                     Duration:
                   </Text>{" "}
-                  <Text color={"#7928CA"} >
-                  {data.duration}
-                  </Text>
+                  <Text color={"#7928CA"}>{data.duration}</Text>
                 </Flex>
                 <Flex alignItems="center" mb={2}>
                   <Text fontWeight="bold" width="80px" color={"black"}>
                     Skills:
                   </Text>{" "}
-                  <Text color={"#7928CA"} >
-                  {data.skills}
-                  </Text>
+                  <Text color={"#7928CA"}>{data.skills}</Text>
                 </Flex>
                 <Flex alignItems="center" mb={2}>
                   <Text fontWeight="bold" width="80px" color={"black"}>
                     Status:
                   </Text>{" "}
-                  <Text color={"#7928CA"} >
-                  {data.status}
-                  </Text>
+                  <Text color={"#7928CA"}>{data.status}</Text>
                 </Flex>
                 <Flex alignItems="center" mb={2}>
                   <Text fontWeight="bold" width="80px" color={"black"}>
                     Test:
                   </Text>{" "}
-                  <Text color={"#7928CA"} >
-                  {data.test}
-                  </Text>
+                  <Text color={"#7928CA"}>{data.test}</Text>
                 </Flex>
               </Box>
 
-              <Box bgGradient='linear(to-l, #7928CA, #7928CA)' borderRadius={"7px"} p={"13px"} boxShadow="xl" // Add box shadow for depth
-              transform="rotateX(10deg)" // Tilt the card
-              transition="transform 0.3s ease-in-out" // Add transition for smooth effect
-              _hover={{
-                transform: "rotateX(0deg)", // Reset transform on hover
-              }}>
+              <Box
+                bgGradient="linear(to-l, #7928CA, #7928CA)"
+                borderRadius={"7px"}
+                p={"13px"}
+                boxShadow="xl" // Add box shadow for depth
+                transform="rotateX(10deg)" // Tilt the card
+                transition="transform 0.3s ease-in-out" // Add transition for smooth effect
+                _hover={{
+                  transform: "rotateX(0deg)", // Reset transform on hover
+                }}
+              >
                 <Calendar
                   className="custom-calendar"
                   tileClassName={({ date }) =>
@@ -163,19 +165,16 @@ function SummaryModel({ data }: SummaryModelProps): JSX.Element {
                       ? "green-background"
                       : ""
                   }
-                  
                 />
-                  <style>{`
+                <style>{`
                   .green-background {
                     background-color: #90EE90 !important;
                   }
                   .custom-calendar{
-                    font-size:17px;
-                    color: white;
+                    width: 100%;
                   }
                 `}</style>
               </Box>
-
             </Box>
           </ModalBody>
 

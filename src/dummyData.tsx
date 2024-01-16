@@ -253,13 +253,13 @@ export const dummyData: Data = {
       id: "t1",
       name: "Tensile Test - Low Load",
       type: "test",
-      duration: 30,
+      duration: 10,
     },
     {
       id: "t2",
       name: "Tensile Test - High Load",
       type: "test",
-      duration: 45,
+      duration: 5,
     },
     {
       id: "t3",
@@ -444,7 +444,7 @@ export const dummyData: Data = {
     {
       id: "r1",
       name: "Alex",
-      status: "Free"
+      status: "Free",
     },
     {
       id: "r1",

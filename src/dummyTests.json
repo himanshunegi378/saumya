@@ -1,0 +1,79 @@
+[
+    {
+      "name": "Dr. Vignesh",
+      "status": "Allocated",
+      "skills": "Mechanical Testing",
+      "id": "1",
+      "test": "Tensile Test - Low Load",
+      "is_internal": "TRUE",
+      "duration": "10",
+      "Materials": "Aluminum Alloy",
+      "Studies": "Durability Analysis",
+      "Protocols": "Tensile Strength Test",
+      "EQL": "EQL-4143",
+      "startDate": "2024-01-13T16:56:16.570Z",
+      "endDate": "2024-01-23T16:56:16.570Z"
+    },
+    {
+      "name": "Dr. Manindra",
+      "status": "Allocated",
+      "skills": "Thermal Analysis",
+      "id": "2",
+      "test": "Tensile Test - High Load",
+      "is_internal": "TRUE",
+      "duration": "5",
+      "Materials": "Aluminum Alloy",
+      "Studies": "Durability Analysis",
+      "Protocols": "Tensile Strength Test",
+      "EQL": "EQL-1696",
+      "startDate": "2024-01-23T16:56:16.570Z",
+      "endDate": "2024-01-28T16:56:16.570Z"
+    },
+    {
+      "name": "Dr. Vishal",
+      "status": "Leave",
+      "skills": "Tensile Analysis",
+      "id": "3",
+      "test": "Null",
+      "is_internal": "TRUE",
+      "duration": "3"
+    },
+    {
+      "name": "Dr. Arun",
+      "status": "Allocated",
+      "skills": "Compression Testing",
+      "id": "4",
+      "test": "Compression Test - Low Pressure",
+      "is_internal": "TRUE",
+      "duration": "35",
+      "Materials": "Aluminum Alloy",
+      "Studies": "Durability Analysis",
+      "Protocols": "Tensile Strength Test",
+      "EQL": "EQL-3779",
+      "startDate": "2024-01-23T16:56:16.570Z",
+      "endDate": "2024-02-27T16:56:16.570Z"
+    },
+    {
+      "name": "Dr. Anand(External)",
+      "status": "Allocated",
+      "skills": "Tensile Analysis",
+      "id": "5",
+      "test": "Compression Test - High Pressure",
+      "is_internal": "FALSE",
+      "duration": "50",
+      "Materials": "Aluminum Alloy",
+      "Studies": "Durability Analysis",
+      "Protocols": "Compression Test",
+      "EQL": "EQL-5026",
+      "startDate": "2024-01-13T17:01:05.006Z",
+      "endDate": "2024-03-03T17:01:05.006Z"
+    },
+    {
+      "name": "Dr. Rahul(External)",
+      "status": "Available",
+      "skills": "Thermal Cycle",
+      "id": "6",
+      "test": "Null",
+      "is_internal": "FALSE"
+    }
+  ]

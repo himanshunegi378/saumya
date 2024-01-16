@@ -21,6 +21,7 @@ import {
   useDisclosure,
   Flex,
 } from "@chakra-ui/react";
+import Calendar from "./data/Calendar";
 import axios from "axios";
 import { Link } from "react-router-dom"; // Assuming you are using React Router for navigation
 import { PiAddressBookFill } from "react-icons/pi";
@@ -31,14 +32,12 @@ import { Badge } from "@chakra-ui/react";
 import SummaryModel from "./SummaryModel";
 import { dummyData } from "./data/dummydata";
 
-
 // export const data = [
 //   ["Availability", "Numbers"],
 //   ["Available", 11],
 //   ["leave", 2],
 //   ["Allocated", 7],
 // ];
-
 
 export const options = {
   title: "Resource Availability",
@@ -63,20 +62,21 @@ const TableHeader = ({ selectedStatus, setSelectedStatus }: any) => (
           <option value="Allocated">Allocated</option>
         </Select>
       </Th>
-      <Th color={"white"}>Report</Th>
+      <Th color={"white"}>Duration</Th>
+      <Th color={"white"}>Skills</Th>
     </Tr>
   </Thead>
 );
 const NavigationBar = () => (
   <Flex justifyContent="space-between" alignItems="center" mb={4}>
     <Text
-            bgGradient="linear(to-l, #7928CA, #FF0080)"
-            bgClip="text"
-            fontSize="2xl"
-            fontWeight="extrabold"
-          >
-            Edwards
-          </Text>
+      bgGradient="linear(to-l, #7928CA, #FF0080)"
+      bgClip="text"
+      fontSize="2xl"
+      fontWeight="extrabold"
+    >
+      Edwards
+    </Text>
     <Flex alignItems="center">
       <Link to="/" style={{ textDecoration: "none" }}>
         <Button ml={4} colorScheme="teal">
@@ -87,31 +87,36 @@ const NavigationBar = () => (
   </Flex>
 );
 
-
 function Summary() {
   const [selectedStatus, setSelectedStatus] = React.useState("Status");
   // const { isOpen, onOpen, onClose } = useDisclosure()
   const [resources, setResources] = React.useState([]);
   // Assuming 'resources' is your fetched data array
-const totalDataCount = resources.length;
+  const totalDataCount = resources.length;
 
-const totalAllocatedCount = resources.filter((item : any) => item.status === "Allocated").length;
-const totalAvailableCount = resources.filter((item: any) => item.status === "Available").length;
-const totalLeaveCount = resources.filter((item: any) => item.status === "Leave").length;
+  const totalAllocatedCount = resources.filter(
+    (item: any) => item.status === "Allocated"
+  ).length;
+  const totalAvailableCount = resources.filter(
+    (item: any) => item.status === "Available"
+  ).length;
+  const totalLeaveCount = resources.filter(
+    (item: any) => item.status === "Leave"
+  ).length;
 
-const data = [
-  ["Availability", "Numbers"],
-  ["Available", totalAvailableCount],
-  ["Leave", totalLeaveCount],
-  ["Allocated", totalAllocatedCount],
-];
+  const data = [
+    ["Availability", "Numbers"],
+    ["Available", totalAvailableCount],
+    ["Leave", totalLeaveCount],
+    ["Allocated", totalAllocatedCount],
+  ];
 
   React.useEffect(() => {
     // Fetch data from the API
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "https://6596915d6bb4ec36ca02eba3.mockapi.io/resource"
+          "https://658c0753859b3491d3f55409.mockapi.io/resources/resources"
         );
         setResources(response.data);
       } catch (error) {
@@ -123,13 +128,15 @@ const data = [
   }, []); // Empty dependency array means this effect runs once after the initial render
 
   const handleDownloadCSV = () => {
-    const availableData = resources.filter((item: any) => item.status === "Allocated");
+    const availableData = resources.filter(
+      (item: any) => item.status === "Allocated"
+    );
 
     const csvContent =
       "data:text/csv;charset=utf-8," +
       "Id,Name,Duration,Skills,Status,test,Materials, Studies,Protocols, EQL\n" +
       availableData
-        .map((item : any) =>
+        .map((item: any) =>
           [
             item.id,
             item.name,
@@ -140,7 +147,7 @@ const data = [
             item.Materials,
             item.Studies,
             item.Protocols,
-            item.EQL
+            item.EQL,
           ].join(",")
         )
         .join("\n");
@@ -157,22 +164,25 @@ const data = [
   const generateRandomNumber = () => {
     return Math.floor(Math.random() * 9000) + 1000;
   };
-  
+
   const generateEQL = () => {
     return `EQL-${generateRandomNumber()}`;
   };
 
-  const filteredData = (selectedStatus === "Status"
-  ? resources
-  : resources.filter((item: { status: string }) => item.status === selectedStatus)) as Array<{
+  const filteredData = (
+    selectedStatus === "Status"
+      ? resources
+      : resources.filter(
+          (item: { status: string }) => item.status === selectedStatus
+        )
+  ) as Array<{
     id: string;
     name: string;
     skills: string;
     status: string;
-    EQL: string
+    EQL: string;
     // Add other properties as needed
   }>;
-      
 
   return (
     <>
@@ -268,7 +278,7 @@ const data = [
                   size={40}
                 />
                 <Text color="" fontSize="lg" fontWeight="bold">
-                  Total Test Completed
+                  Total Open Test
                 </Text>
               </Box>
               <Box
@@ -277,7 +287,7 @@ const data = [
                 alignItems={"center"}
                 p={7}
               >
-                <Heading>6</Heading>
+                <Heading>{totalAllocatedCount}</Heading>
                 <BsGraphUpArrow size={25} />
               </Box>
             </GridItem>
@@ -292,33 +302,27 @@ const data = [
                 transform: "rotateX(0deg)", // Reset transform on hover
               }}
             >
+              <Chart chartType="PieChart" data={data} options={options} />
+
               <Box
-                h="50%"
-                bgGradient={[
-                  // 'linear(to-tr, teal.300, yellow.400)',
-                  "linear(to-t, gray.50 50%, teal.300 50%)",
-                  "linear(to-b, orange.100, purple.300)",
-                ]}
+                bg={"white"}
                 display={"flex"}
-                alignItems={"flex-end"}
-                //   justifyContent={'center'}
-              >
-                <FaNoteSticky
-                  style={{ marginRight: "7px", marginLeft: "60px" }}
-                  size={40}
-                />
-                <Text color="" fontSize="lg" fontWeight="bold">
-                  Total Open Test
-                </Text>
-              </Box>
-              <Box
-                display={"flex"}
-                justifyContent={"space-between"}
                 alignItems={"center"}
-                p={7}
+                marginTop={"-40px"}
+                justifyContent={"flex-end"}
               >
-                <Heading>{totalAllocatedCount}</Heading>
-                <BsGraphUpArrow size={25} />
+                <Button
+                  bg={"blue"}
+                  colorScheme="blue"
+                  // variant="ghost"
+                  // onClick={""}
+                  color={"white"}
+                  marginBottom={"10px"}
+                  marginLeft={"7px"}
+                  onClick={handleDownloadCSV}
+                >
+                  Download CSV
+                </Button>
               </Box>
             </GridItem>
             <GridItem
@@ -347,17 +351,57 @@ const data = [
                         _hover={{ background: "gray.100", cursor: "pointer" }}
                         onClick={() => console.log("data")} // Add your click functionality here
                       >
-                        <Td fontSize="1xl"
-            fontWeight="bold">{item.status === "Allocated" ? item.EQL : "Not Generated"}</Td>
-                        <Td>{item.name}</Td>
-                        <Td>{item.skills}</Td>
-                        
-                        <Td>
-                          <Badge variant="solid" colorScheme={item.status == "Available" ? "green" : "red"}>
-                            {item.status  == "Leave" ? "Not Available" : item.status}
-                          </Badge>
+                        <Td fontSize="10px" fontWeight="bold">
+                          {item.status === "Allocated"
+                            ? item.EQL
+                            : "Not Generated"}
                         </Td>
-                        <Td><SummaryModel data={item} /></Td>
+                        <Td fontSize={"12px"}>{item.name}</Td>
+                        <Td fontSize={"12px"}>{item.skills}</Td>
+
+                        <Td>
+                          {item.status === "Available" && (
+                            <Badge
+                              width={"100px"}
+                              variant="solid"
+                              colorScheme={
+                                item.status === "Available" ? "green" : "red"
+                              }
+                            >
+                              Available
+                            
+                            </Badge>
+                          )}
+                          {item.status !== "Available" && (
+                            <Badge
+                            width={"100px"}
+                            variant="solid"
+                            colorScheme={
+                              item.status === "Available" ? "green" : "red"
+                            }
+                          >
+                            <span>
+                              {item.status === "Leave"
+                                ? "Not Available"
+                                : item.status + "-" + item.duration + "d"}
+                            </span>
+                            </Badge>
+                          )}
+                        </Td>
+                        <Td fontSize={"10px"}>
+                          <span style={{ color: "green" }}>
+                            Start Date:{" "}
+                            {new Date(item.startDate).toLocaleDateString()}
+                          </span>
+                          <br />
+                          <span style={{ color: "red" }}>
+                            End Date:{" "}
+                            {new Date(item.endDate).toLocaleDateString()}
+                          </span>
+                        </Td>
+                        <Td>
+                          <SummaryModel data={item} />
+                        </Td>
                       </Tr>
                     ))}
                   </Tbody>
@@ -370,15 +414,15 @@ const data = [
               rowSpan={12}
               bg="gray.200"
               borderRadius="lg"
-              boxShadow="xl" // Add box shadow for depth
-              transform="rotateX(10deg)" // Tilt the card
-              transition="transform 0.3s ease-in-out" // Add transition for smooth effect
+              boxShadow="xl"
+              transform="rotateX(10deg)"
+              transition="transform 0.3s ease-in-out"
               _hover={{
-                transform: "rotateX(0deg)", // Reset transform on hover
+                transform: "rotateX(0deg)",
               }}
             >
               <Box
-                h={"15%"}
+                h={"10%"}
                 bg={"purple.500"}
                 display="flex"
                 alignItems={"center"}
@@ -388,31 +432,16 @@ const data = [
                   Summary Report
                 </Text>
               </Box>
-              <Box>
-                <Chart
-                  chartType="PieChart"
-                  data={data}
-                  options={options}
-                  width={"100%"}
-                  height={"360px"}
-                />
+              <Box maxHeight="450px" overflowY="auto" p={4}>
+                {resources
+                  .filter((resource: any) => resource.status === "Allocated")
+                  .map((allocatedResource: any) => (
+                    <Calendar
+                      key={allocatedResource.id}
+                      resource={allocatedResource}
+                    />
+                  ))}
               </Box>
-              <Box bg={"white"} display={"flex"} alignItems={"center"}>
-                <Text>Total Available:</Text>
-              <Button
-              bg={"blue"}
-              colorScheme="blue"
-              // variant="ghost"
-              // onClick={""}
-              color={"white"}
-              marginBottom={"10px"}
-              marginLeft={"7px"}
-              onClick={handleDownloadCSV}
-            >
-              Download CSV
-            </Button>
-              </Box>
-              
             </GridItem>
           </Grid>
         </Box>
