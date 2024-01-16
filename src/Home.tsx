@@ -613,10 +613,10 @@ const Resources = ({
       setDataChanged(true);
       // Reload the window after 4 seconds
 
-      // setTimeout(() => {
-      //   // Reload the window
-      //   window.location.reload();
-      // }, 5000);
+      setTimeout(() => {
+        // Reload the window
+        window.location.reload();
+      }, 5000);
 
       // Update the local state with the updated resource
       // setResources((prevResources) =>
