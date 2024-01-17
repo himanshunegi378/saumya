@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/saumya/static/css/main.f0071183.css",
-    "main.js": "/saumya/static/js/main.5aba2e1d.js",
+    "main.js": "/saumya/static/js/main.3950775c.js",
     "index.html": "/saumya/index.html",
     "main.f0071183.css.map": "/saumya/static/css/main.f0071183.css.map",
-    "main.5aba2e1d.js.map": "/saumya/static/js/main.5aba2e1d.js.map"
+    "main.3950775c.js.map": "/saumya/static/js/main.3950775c.js.map"
   },
   "entrypoints": [
     "static/css/main.f0071183.css",
-    "static/js/main.5aba2e1d.js"
+    "static/js/main.3950775c.js"
   ]
 }
