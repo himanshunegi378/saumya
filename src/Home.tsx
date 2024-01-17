@@ -640,7 +640,7 @@ const Resources = ({
       setTimeout(() => {
         // Reload the window
         window.location.reload();
-      }, 5000);
+      }, 3500);
 
       // Update the local state with the updated resource
       // setResources((prevResources) =>
