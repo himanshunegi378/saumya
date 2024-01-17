@@ -33,8 +33,8 @@ import { Input } from "@chakra-ui/react";
 import { GoArrowLeft } from "react-icons/go";
 import { useToast } from "@chakra-ui/react";
 import { BrowserRouter as Router, Route, Link, Routes } from "react-router-dom";
+import emailjs from "@emailjs/browser";
 import Summary from "./Summary";
-
 interface Material {
   id: string;
   name: string;
@@ -526,8 +526,11 @@ const Resources = ({
   const [searchTerm, setSearchTerm] = useState("");
   const [selectResources, setSelectResources] = useState({});
   const [dataChanged, setDataChanged] = useState(false);
+  const [resourcesEmail, setResourcesEmail] = useState("");
+  const [resourcesName, setResourcesName] = useState("");
   const toast = useToast();
   // console.log("svdhachdfgascfga");
+  useEffect(() => emailjs.init("B9xUltKyGvGG5ntWd"), []);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -552,7 +555,7 @@ const Resources = ({
 
   const handleAllocate = async (selectedMaterialId: any) => {
     let startDate= new Date();
-    let endDate = new Date()
+    let endDate = new Date();
     console.log(resources)
     try {
       console.log("selProtocols",selProtocols)
@@ -613,6 +616,27 @@ const Resources = ({
       setDataChanged(true);
       // Reload the window after 4 seconds
 
+      const serviceId = "service_g4dgsbg";
+      const templateId = "template_577l20t";
+      try {
+        setLoading(true);
+        await emailjs.send(serviceId, templateId, {
+         name: resourcesName,
+         recipient: resourcesEmail,
+         EQL: Eqlnumber,
+         materials: selMaterial,
+         studies: selStudies,
+         protocols: selProtocols,
+         test: name,
+         startDate: startDate.toISOString(),
+         endDate: endDate.toISOString()
+
+        });
+        // alert("email successfully sent check inbox");
+      } catch (error) {
+        console.log(error);
+      }
+
       setTimeout(() => {
         // Reload the window
         window.location.reload();
@@ -625,6 +649,7 @@ const Resources = ({
     } catch (error) {
       console.error("Error updating resource:", error);
     }
+
   };
   if (loading) {
     return <div>Loading...</div>;
@@ -698,6 +723,8 @@ const Resources = ({
                     // onSelectProtocols(material);
                     setSelectedMaterialId(material.id);
                     setSelectResources(material);
+                    setResourcesEmail(material.email_id);
+                    setResourcesName(material.name)
                   }}
                   bg={"white"}
                   bgGradient={

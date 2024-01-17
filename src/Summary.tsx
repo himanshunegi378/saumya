@@ -435,7 +435,7 @@ function Summary() {
                 justifyContent={"center"}
               >
                 <Text color={"white"} fontSize={20} fontWeight="bold">
-                  Summary Report
+                  Weekly Report
                 </Text>
               </Box>
               <Box maxHeight="450px" overflowY="auto" p={4}>
