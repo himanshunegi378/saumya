@@ -46,10 +46,10 @@ export const options = {
 const TableHeader = ({ selectedStatus, setSelectedStatus }: any) => (
   <Thead style={{ position: "sticky", top: 0, zIndex: 1, background: "white" }}>
     <Tr bg={"purple.500"}>
-      <Th color={"white"}>EQL</Th>
-      <Th color={"white"}>Material</Th>
-      <Th color={"white"}>Name</Th>
-      <Th color={"white"} width={"20px"}>Test</Th>
+      <Th color={"white"} fontSize={"14px"}>EQL</Th>
+      <Th color={"white"} fontSize={"14px"}>Material</Th>
+      <Th color={"white"} fontSize={"14px"}>Name</Th>
+      <Th color={"white"} fontSize={"14px"}>Test</Th>
       <Th isNumeric color={"white"}>
         <Select
           // placeholder="Status"
@@ -63,8 +63,8 @@ const TableHeader = ({ selectedStatus, setSelectedStatus }: any) => (
           <option value="Allocated">Allocated</option>
         </Select>
       </Th>
-      <Th color={"white"}>Duration</Th>
-      <Th color={"white"}>Details</Th>
+      <Th color={"white"} fontSize={"14px"}>Duration</Th>
+      <Th color={"white"} fontSize={"14px"}>Details</Th>
     </Tr>
   </Thead>
 );
