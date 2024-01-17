@@ -615,6 +615,7 @@ const Resources = ({
       }
       setDataChanged(true);
       // Reload the window after 4 seconds
+      const sendEmail = async () => {
 
       const serviceId = "service_g4dgsbg";
       const templateId = "template_577l20t";
@@ -636,11 +637,13 @@ const Resources = ({
       } catch (error) {
         console.log(error);
       }
+    }
+    sendEmail();
 
       setTimeout(() => {
         // Reload the window
         window.location.reload();
-      }, 3500);
+      }, 2500);
 
       // Update the local state with the updated resource
       // setResources((prevResources) =>
