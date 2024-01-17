@@ -47,8 +47,9 @@ const TableHeader = ({ selectedStatus, setSelectedStatus }: any) => (
   <Thead style={{ position: "sticky", top: 0, zIndex: 1, background: "white" }}>
     <Tr bg={"purple.500"}>
       <Th color={"white"}>EQL</Th>
+      <Th color={"white"}>Material</Th>
       <Th color={"white"}>Name</Th>
-      <Th color={"white"}>Skills</Th>
+      <Th color={"white"} width={"20px"}>Test</Th>
       <Th isNumeric color={"white"}>
         <Select
           // placeholder="Status"
@@ -357,18 +358,19 @@ function Summary() {
                         _hover={{ background: "gray.100", cursor: "pointer" }}
                         onClick={() => console.log("data")} // Add your click functionality here
                       >
-                        <Td fontSize="10px" fontWeight="bold">
+                        <Td fontSize="14px" fontWeight="bold">
                           {item.status === "Allocated"
                             ? item.EQL
                             : "Not Generated"}
                         </Td>
-                        <Td fontSize={"12px"}>{item.name}</Td>
-                        <Td fontSize={"12px"}>{item.skills}</Td>
+                        <Td fontSize={"14px"} fontFamily={"sans-serif"}>{item.Materials ?item.Materials : "Null"}</Td>
+                        <Td  fontSize={"14px"} fontFamily={"sans-serif"}>{item.name}</Td>
+                        <Td  fontSize={"14px"} fontFamily={"sans-serif"}>{item.test ? item.test : "Null"}</Td>
 
                         <Td>
                           {item.status === "Available" && (
                             <Badge
-                              width={"100px"}
+                              width={"auto"}
                               variant="solid"
                               colorScheme={
                                 item.status === "Available" ? "green" : "red"
@@ -380,7 +382,7 @@ function Summary() {
                           )}
                           {item.status !== "Available" && (
                             <Badge
-                            width={"100px"}
+                            width={"auto"}
                             variant="solid"
                             colorScheme={
                               item.status === "Available" ? "green" : "red"
@@ -394,16 +396,15 @@ function Summary() {
                             </Badge>
                           )}
                         </Td>
-                        <Td fontSize={"10px"}>
-                          <span style={{ color: "green" }}>
-                            Start Date:{" "}
-                            {new Date(item.startDate).toLocaleDateString()}
-                          </span>
-                          <br />
-                          <span style={{ color: "red" }}>
-                            End Date:{" "}
-                            {new Date(item.endDate).toLocaleDateString()}
-                          </span>
+                        <Td  fontSize={"14px"} fontFamily={"sans-serif"}>
+                          {item.startDate?
+                          <><span style={{ color: "green" }}>
+                              Start Date:{" "}
+                              {new Date(item.startDate).toLocaleDateString()}
+                            </span><br /><span style={{ color: "red" }}>
+                                End Date:{" "}
+                                {new Date(item.endDate).toLocaleDateString()}
+                              </span></>: "Null"}
                         </Td>
                         <Td>
                           <SummaryModel data={item} />
