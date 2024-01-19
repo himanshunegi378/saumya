@@ -363,9 +363,9 @@ function Summary() {
                             ? item.EQL
                             : "Not Generated"}
                         </Td>
-                        <Td fontSize={"14px"} fontFamily={"sans-serif"}>{item.Materials ?item.Materials : "Null"}</Td>
+                        <Td fontSize={"14px"} fontFamily={"sans-serif"}>{item.Materials != "Null" ?item.Materials : "--"}</Td>
                         <Td  fontSize={"14px"} fontFamily={"sans-serif"}>{item.name}</Td>
-                        <Td  fontSize={"14px"} fontFamily={"sans-serif"}>{item.test ? item.test : "Null"}</Td>
+                        <Td  fontSize={"14px"} fontFamily={"sans-serif"}>{item.test != "Null" ? item.test : "--"}</Td>
 
                         <Td>
                           {item.status === "Available" && (
@@ -397,14 +397,20 @@ function Summary() {
                           )}
                         </Td>
                         <Td  fontSize={"14px"} fontFamily={"sans-serif"}>
-                          {item.startDate?
+                          {item.startDate != "Null"?
                           <><span style={{ color: "green" }}>
                               Start Date:{" "}
                               {new Date(item.startDate).toLocaleDateString()}
                             </span><br /><span style={{ color: "red" }}>
                                 End Date:{" "}
                                 {new Date(item.endDate).toLocaleDateString()}
-                              </span></>: "Null"}
+                              </span></>:<><span style={{ color: "green" }}>
+                              Start Date:{"YYYY/MM/DD"}
+                              
+                            </span><br /><span style={{ color: "red" }}>
+                                End Date:{"YYYY/MM/DD"}
+                                
+                              </span></>}
                         </Td>
                         <Td>
                           <SummaryModel data={item} />
